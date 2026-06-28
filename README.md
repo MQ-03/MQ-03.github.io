@@ -40,3 +40,4 @@ and replace the `mailto:` logic in `script.js`.
 - **Azure Static Web Apps:** `swa deploy`, or connect the repo in the Azure Portal.
 - **Netlify / Vercel / GitHub Pages:** drop the folder in — it's already static.
 - **Azure Blob Storage static website:** upload the files, set `index.html` as the index document.
+# MQ-03.github.io
