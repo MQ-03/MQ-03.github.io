@@ -41,4 +41,3 @@ and replace the `mailto:` logic in `script.js`.
 - **Netlify / Vercel / GitHub Pages:** drop the folder in — it's already static.
 - **Azure Blob Storage static website:** upload the files, set `index.html` as the index document.
 # MQ-03.github.io
-# MQ-03.github.io
