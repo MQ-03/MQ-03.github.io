@@ -44,16 +44,23 @@ if ('IntersectionObserver' in window) {
 }
 
 // ===== Contact form (client-side demo) =====
+// ⬇️  PASTE YOUR WEB3FORMS ACCESS KEY HERE (from https://web3forms.com — enter
+//     your email, copy the key it emails you). Until you do, the form falls back
+//     to opening the visitor's mail client.
+const WEB3FORMS_KEY = 'YOUR_ACCESS_KEY_HERE';
+
 const form = document.getElementById('contactForm');
 const note = document.getElementById('formNote');
+const submitBtn = form.querySelector('button[type="submit"]');
 
-form.addEventListener('submit', (e) => {
+form.addEventListener('submit', async (e) => {
   e.preventDefault();
   note.className = 'form__note';
 
   const name = form.name.value.trim();
   const email = form.email.value.trim();
   const message = form.message.value.trim();
+  const projectType = form.budget.value || 'Not specified';
   const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 
   if (!name || !emailOk || !message) {
@@ -62,14 +69,53 @@ form.addEventListener('submit', (e) => {
     return;
   }
 
-  // No backend wired up — open the user's mail client as a graceful fallback.
-  const subject = encodeURIComponent(`New project enquiry from ${name}`);
-  const body = encodeURIComponent(
-    `${message}\n\n— ${name}\n${email}\nProject type: ${form.budget.value || 'Not specified'}`
-  );
-  window.location.href = `mailto:mubaraque3@gmail.com?subject=${subject}&body=${body}`;
+  const configured = WEB3FORMS_KEY && WEB3FORMS_KEY !== 'YOUR_ACCESS_KEY_HERE';
 
-  note.textContent = 'Thanks! Your email client should open — or reach me directly at mubaraque3@gmail.com.';
-  note.classList.add('ok');
-  form.reset();
+  // Fallback: no key configured yet → open the visitor's mail client.
+  if (!configured) {
+    const subject = encodeURIComponent(`New project enquiry from ${name}`);
+    const body = encodeURIComponent(
+      `${message}\n\n— ${name}\n${email}\nProject type: ${projectType}`
+    );
+    window.location.href = `mailto:mubaraque3@gmail.com?subject=${subject}&body=${body}`;
+    note.textContent = 'Your email client should open — or reach me directly at mubaraque3@gmail.com.';
+    note.classList.add('ok');
+    return;
+  }
+
+  // Real submission via Web3Forms (no backend needed).
+  const original = submitBtn.textContent;
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Sending…';
+
+  try {
+    const res = await fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify({
+        access_key: WEB3FORMS_KEY,
+        subject: `New enquiry from ${name} — portfolio`,
+        from_name: name,
+        name,
+        email,
+        project_type: projectType,
+        message,
+      }),
+    });
+    const data = await res.json();
+
+    if (data.success) {
+      note.textContent = 'Thanks! Your message has been sent — I’ll reply within one business day.';
+      note.classList.add('ok');
+      form.reset();
+    } else {
+      throw new Error(data.message || 'Submission failed');
+    }
+  } catch (err) {
+    note.textContent = 'Something went wrong sending the form. Please email me at mubaraque3@gmail.com.';
+    note.classList.add('err');
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = original;
+  }
 });

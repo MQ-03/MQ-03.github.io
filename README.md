@@ -24,17 +24,26 @@ Open `index.html` in a browser, or serve it:
 python3 -m http.server 8000   # then visit http://localhost:8000
 ```
 
-## Easy edits
-- **Add a profile photo:** replace the `MM` initials block (`.about__avatar` in `index.html`)
-  with `<img src="photo.jpg" alt="Mubaraque M" />`.
-- **LinkedIn / GitHub:** add links to the `.cta__contacts` list in the `#contact` section.
+## Profile photo
+The About section shows a photo named **`photo.jpg`** in this folder, and falls back to the
+"MM" monogram if it's missing. To add yours:
+
+1. Drop a square-ish image here named exactly `photo.jpg` (≈600×600px).
+2. Commit & push: `git add photo.jpg && git commit -m "Add profile photo" && git push`.
+
+## Contact form (Web3Forms)
+The form is wired to **Web3Forms** — no backend or dashboard needed. To switch it on:
+
+1. Go to **https://web3forms.com**, enter `mubaraque3@gmail.com`, copy the **access key** it emails you.
+2. In `script.js`, replace `YOUR_ACCESS_KEY_HERE` with that key (near the top).
+3. Commit & push. Submissions then arrive in your inbox.
+
+Until the key is set, the form gracefully falls back to opening the visitor's mail client.
+
+## Other easy edits
+- **LinkedIn / GitHub:** links live in the `.cta__contacts` list in the `#contact` section.
 - **Brand colors:** the `:root` block at the top of `styles.css` (`--azure`, `--cyan`, …).
 - **Resume PDF download:** drop the PDF in this folder and add a button linking to it in `#about`.
-
-### Contact form
-The form opens the visitor's mail client (no backend needed). To capture submissions instead,
-point it at a service like **Azure Static Web Apps Functions**, **Formspree**, or **Power Automate**
-and replace the `mailto:` logic in `script.js`.
 
 ## Deploy
 - **Azure Static Web Apps:** `swa deploy`, or connect the repo in the Azure Portal.

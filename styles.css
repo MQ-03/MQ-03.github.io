@@ -272,10 +272,15 @@ h3 { font-size: 1.2rem; }
 .about { display: grid; grid-template-columns: .8fr 1.2fr; gap: 3rem; align-items: center; }
 .about__media { display: grid; gap: 1.2rem; justify-items: center; }
 .about__avatar {
+  position: relative; overflow: hidden;
   width: 200px; height: 200px; border-radius: 32px; display: grid; place-items: center;
   font-family: var(--display); font-weight: 800; font-size: 3.4rem; color: #fff;
   background: linear-gradient(140deg, var(--azure), var(--azure-700) 60%, var(--ink));
   box-shadow: var(--shadow-lg);
+}
+.about__avatar__img {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; border-radius: inherit;
 }
 .about__chips { display: flex; flex-wrap: wrap; gap: .5rem; justify-content: center; }
 .about__chips span { font-size: .82rem; font-weight: 600; background: var(--white); border: 1px solid var(--line); padding: .4rem .8rem; border-radius: 999px; box-shadow: var(--shadow); }
