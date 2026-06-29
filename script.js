@@ -47,7 +47,7 @@ if ('IntersectionObserver' in window) {
 // ⬇️  PASTE YOUR WEB3FORMS ACCESS KEY HERE (from https://web3forms.com — enter
 //     your email, copy the key it emails you). Until you do, the form falls back
 //     to opening the visitor's mail client.
-const WEB3FORMS_KEY = 'YOUR_ACCESS_KEY_HERE';
+const WEB3FORMS_KEY = '619a91ee-33ef-464c-9d71-2a010f832eac';
 
 const form = document.getElementById('contactForm');
 const note = document.getElementById('formNote');
